@@ -15,7 +15,8 @@ try {
   });
   const page = await browser.newPage();
 
-  for (const uuid of uuids) {
+  for (let i = 0; i < uuids.length; i++) {
+    const uuid = uuids[i];
     const url = `https://my.zettle.com/products/${uuid}`;
     await page.goto(url);
     await page.setViewport({ width: 1080, height: 1024 });
@@ -95,7 +96,8 @@ try {
       return Array.from(document.querySelectorAll('p')).some(p => p.textContent && p.textContent.includes('Produkten uppdaterades'));
     }, { timeout: 10000 });
 
-    console.log('Successfully updated product', uuid);
+    const percent = Math.round(((i + 1) / uuids.length) * 100);
+    console.log(`Successfully updated product ${uuid} (${i + 1}/${uuids.length}, ${percent}%)`);
   }
 
 } catch (error) {
